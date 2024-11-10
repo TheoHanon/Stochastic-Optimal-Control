@@ -15,6 +15,11 @@ def perform_lstd(policy: callable, cost: callable, psi: List[callable], W: np.nd
     :return: Estimated parameter vector θ_LSTD_N for the Q-function.
     """
     x_data, u_data = data
+
+    if x_data.ndim == 2:
+        x_data = x_data[np.newaxis, ...]
+        u_data = u_data[np.newaxis, ...]
+
     N = x_data.shape[1]  # N is the number of data points
     d = len(psi)  # Number of basis functions
 

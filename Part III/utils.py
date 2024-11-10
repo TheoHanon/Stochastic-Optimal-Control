@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 
-def show_trajectories(x, u, x0):
+def show_trajectories(x, u, x0, legend_labels):
     """
     Create a plot of the trajectories of the system states and control inputs.
 
@@ -45,6 +45,6 @@ def show_trajectories(x, u, x0):
                 axs[i].plot(np.arange(0, x.shape[-1]), np.mean(x[:, i, :], axis = 0))
 
 
-    fig.legend([f"$x_0 = [{x0[0]},{x0[1]}, {x0[2]}, {x0[3]},{x0[-1]}]$" for x0 in arr_x0], loc = "upper center", ncol = 2, bbox_to_anchor=(0.5, 1.0),fontsize = 18, shadow = True)
+    fig.legend([f"{label_name} : $x_0 = [{x0[0]},{x0[1]}, {x0[2]}, {x0[3]},{x0[-1]}]$" for label_name ,x0 in zip(legend_labels, arr_x0)], loc = "upper center", ncol = 2, bbox_to_anchor=(0.5, 1.0),fontsize = 18, shadow = True)
     # fig.savefig("figures/trajectories_nl.pdf")
     plt.show()

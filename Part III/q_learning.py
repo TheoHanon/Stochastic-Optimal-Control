@@ -57,7 +57,7 @@ def q_learning(lam : float,
 
     for traj in range(x_data.shape[0]):
 
-        for k in range(1, x_data.shape[1]-1):
+        for k in range(1, x_data.shape[2]-1):
 
             x_k = x_data[traj, :, k]          # State at time k
             u_k = u_data[traj, 0, k]           # Action at time k

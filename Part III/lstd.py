@@ -20,7 +20,7 @@ def perform_lstd(policy: callable, cost: callable, psi: List[callable], W: np.nd
         x_data = x_data[np.newaxis, ...]
         u_data = u_data[np.newaxis, ...]
 
-    N = x_data.shape[1]  # N is the number of data points
+    N = x_data.shape[2]  # N is the number of data points
     d = len(psi)  # Number of basis functions
 
     # Define psi_vector to compute feature vector for given x and u

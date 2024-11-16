@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
+from typing import List, Tuple, Callable
 
 
 def show_trajectories(x, u, x0, legend_labels):
@@ -48,3 +49,17 @@ def show_trajectories(x, u, x0, legend_labels):
     fig.legend([f"{label_name} : $x_0 = [{x0[0]},{x0[1]}, {x0[2]}, {x0[3]},{x0[-1]}]$" for label_name ,x0 in zip(legend_labels, arr_x0)], loc = "upper center", ncol = 2, bbox_to_anchor=(0.5, 1.0),fontsize = 18, shadow = True)
     # fig.savefig("figures/trajectories_nl.pdf")
     plt.show()
+
+def compute_TD(data : np.ndarray, Q : Callable[[np.ndarray, np.ndarray, callable], float], phi : Callable[[np.ndarray], float], cost : Callable[[np.ndarray, np.ndarray], float], psi : Callable[[np.ndarray, np.ndarray], np.ndarray], theta : np.ndarray) -> np.ndarray:
+    x, u = data
+    TD = np.empty(x.shape[1] - 1)
+
+    for k in range(x.shape[1]-1):
+
+        x_k = x[:, k]
+        u_k = u[:, k]
+        x_k_plus = x[:, k+1]
+
+        TD[k] = cost(x_k, u_k) + Q(x_k_plus, phi(x_k_plus), theta, psi) - Q(x_k, u_k, theta, psi)
+
+    return TD

@@ -46,16 +46,27 @@ def perform_lstd(policy: callable, cost: callable, psi: callable, W: np.ndarray,
     return theta_LSTD_N
 
 
-def perform_lstd_PI(initial_policy : callable, cost : callable, psi : List[callable], W : np.ndarray, data : Tuple[np.ndarray], n_iter : int, action_space : tuple, d : int) -> np.ndarray:
+def perform_lstd_PI(initial_policy : callable, cost : callable, psi : callable, W : np.ndarray, data : Tuple[np.ndarray], n_iter : int, action_space : tuple, d : int) -> np.ndarray:
     """
     Perform LSTD algorithm to estimate the Q-function with policy iteration
+    
+    Parameters:
+    -----------
+    initial_policy: Initial policy function.
+    cost: Cost function.
+    psi: Callable representing the feature function ψ : (x, u) -> R^d.
+    W: Regularization matrix.
+    data: Tuple of data arrays (x_data, u_data) with shapes (n, N) and (m, N), respectively.
+    n_iter: Number of policy iterations.
+    action_space: Tuple representing the bounds of the action space.
+    d: Dimension of the feature space.
 
-    :param phi: List of feature functions
-    :param data: data pair (x, u) matrix with x : shape = (N, n) and u : shape = (N, m)
-
-    :return: Estimated parameter vector θ_LSTD_N for the Q-function
+    Returns:
+    --------
+    theta_LSTD_N: Estimated Q-function parameter vector.
+    
     """
-
+    
     theta_LSTD_N = None
     policy = initial_policy
 
@@ -69,5 +80,3 @@ def perform_lstd_PI(initial_policy : callable, cost : callable, psi : List[calla
         policy = improved_policy
 
     return theta_LSTD_N
-
-

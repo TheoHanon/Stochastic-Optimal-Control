@@ -3,6 +3,7 @@ import numpy as np
 from typing import List, Tuple, Callable
 
 
+
 def show_trajectories(x, u, x0, legend_labels):
     """
     Create a plot of the trajectories of the system states and control inputs.
@@ -26,7 +27,8 @@ def show_trajectories(x, u, x0, legend_labels):
     if len(arr_x0.shape) == 1:
         arr_x0 = arr_x0[np.newaxis, ...]
     
-
+    colors = ["b", "g", "r", "c", "m", "y", "k", "w"]
+    linestyles = ["-", "--", "-.", ":", "-.", "--", "-"]
 
     fig, axs = plt.subplots(2, 3, dpi = 150, sharex=True, figsize = (20, 10))
     axs = axs.ravel()
@@ -35,19 +37,22 @@ def show_trajectories(x, u, x0, legend_labels):
     for ax, ylabel in zip(axs, ylabels) :
         ax.set_ylabel(ylabel, rotation = 0, labelpad = 10, fontsize = 14)
         ax.grid(True, which = "both", axis = "both", ls = "--")
-        ax.set_xlabel("Time", fontsize = 14) 
+        ax.set_xlabel("Time step", fontsize = 14) 
 
-    for i, (x, u) in enumerate(zip(arr_x, arr_u)):
+    for j, (x, u) in enumerate(zip(arr_x, arr_u)):
 
+        color = colors[j]
+        linestyle = linestyles[j] 
+        
         for i in range(len(axs)):
+   
             if i == len(axs) - 1:
-                axs[i].plot(np.arange(0, u.shape[-1]), np.mean(u, axis = 0).squeeze())    
+                axs[i].plot(np.arange(0, u.shape[-1]), np.mean(u, axis = 0).squeeze(), color = color, linestyle = linestyle) 
             else :
-                axs[i].plot(np.arange(0, x.shape[-1]), np.mean(x[:, i, :], axis = 0))
-
+                axs[i].plot(np.arange(0, x.shape[-1]), np.mean(x[:, i, :], axis = 0), color = color, linestyle = linestyle)
 
     fig.legend([f"{label_name} : $x_0 = [{x0[0]},{x0[1]}, {x0[2]}, {x0[3]},{x0[-1]}]$" for label_name ,x0 in zip(legend_labels, arr_x0)], loc = "upper center", ncol = 2, bbox_to_anchor=(0.5, 1.0),fontsize = 18, shadow = True)
-    # fig.savefig("figures/trajectories_nl.pdf")
+    fig.savefig("figures/trajectories_lin_vs_nl_PI.pdf")
     plt.show()
 
 def compute_TD(data : np.ndarray, Q : Callable[[np.ndarray, np.ndarray, callable], float], phi : Callable[[np.ndarray], float], cost : Callable[[np.ndarray, np.ndarray], float], psi : Callable[[np.ndarray, np.ndarray], np.ndarray], theta : np.ndarray) -> np.ndarray:

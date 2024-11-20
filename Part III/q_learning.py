@@ -28,11 +28,11 @@ def q_learning(lam : float,
     Perform the Q(λ) learning algorithm to estimate the Q-function.
 
     :param lam: memory parameter.
-    :param data: data pair (x, u) matrix with x : shape = (n_traj, n, N) and u : shape = (n_traj, 1,N)
+    :param data: data pair (x, u) matrix with x of shape (n, N) and u of shape (1, N).
     :param step_size: Step size function.
     :param theta0: Initial parameter vector.
-    :param zeta0: Initial basis function
-    :param psi: Final basis function.
+    :param zeta0: Callable representing the first eligibility vector : (x, u) -> R^d.
+    :param psi: Callable representing the feature function ψ : (x, u) -> R^d.
 
     :return: Estimated parameter vector θ for the Q-function
     """
@@ -49,12 +49,12 @@ def q_learning(lam : float,
         x_k_plus = x_data[:, k + 1]  # State at time k+1
 
         Q_theta = lambda x, u : np.dot(theta, zeta_vector(x, u))
-        phi_theta = minimize(lambda u : Q_theta(x_k_plus, u), bounds = [action_space_bounds]).x
+        phi_theta = minimize(lambda u : Q_theta(x_k_plus, u), 1, bounds = [action_space_bounds]).x
     
         D_k_plus = - Q_theta(x_k, u_k) + cost(x_k, u_k) + Q_theta(x_k_plus, phi_theta)
         theta += step_size(k) * D_k_plus * zeta_vector(x_k, u_k)
         zeta_vector = add_functions(lam, zeta_vector, psi_vector)
 
-    return theta
+    return theta, zeta_vector
 
 

@@ -4,7 +4,7 @@ from typing import List, Tuple, Callable
 
 
 
-def show_trajectories(x, u, x0, legend_labels):
+def show_trajectories(x, u, x0, legend_labels, save = None):
     """
     Create a plot of the trajectories of the system states and control inputs.
 
@@ -52,8 +52,10 @@ def show_trajectories(x, u, x0, legend_labels):
                 axs[i].plot(np.arange(0, x.shape[-1]), np.mean(x[:, i, :], axis = 0), color = color, linestyle = linestyle)
 
     fig.legend([f"{label_name} : $x_0 = [{x0[0]},{x0[1]}, {x0[2]}, {x0[3]},{x0[-1]}]$" for label_name ,x0 in zip(legend_labels, arr_x0)], loc = "upper center", ncol = 2, bbox_to_anchor=(0.5, 1.0),fontsize = 18, shadow = True)
-    #fig.savefig("figures/trajectories_lin_vs_nl_PI.pdf")
+    if save is not None:
+        fig.savefig("figures/" + save + ".pdf", dpi = 300)
     plt.show()
+
 
 def compute_TD(data : np.ndarray, Q : Callable[[np.ndarray, np.ndarray, callable], float], phi : Callable[[np.ndarray], float], cost : Callable[[np.ndarray, np.ndarray], float], psi : Callable[[np.ndarray, np.ndarray], np.ndarray], theta : np.ndarray) -> np.ndarray:
     x, u = data

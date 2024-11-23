@@ -13,7 +13,7 @@ def add_functions(lam : float, func1 : callable, func2 : callable) -> callable:
     :return: Function that adds the two input functions.
     """
 
-    return lambda *args, **kwargs: lam*func1(*args, **kwargs) + func2(*args, **kwargs)
+    return lambda x,u: lam*func1(x, u) + func2(x, u)
 
 
 def q_learning(lam : float, 

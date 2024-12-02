@@ -67,13 +67,13 @@ def show_trajectories(data_dict, title=None, use_labels=True, save=None):
             label
             for label in data_dict.keys()
         ]
-        fig.legend(legend_labels, loc="upper center", ncol=2, bbox_to_anchor=(0.5, 1.0), fontsize=18, shadow=True)
+        fig.legend(legend_labels, loc="upper center", ncol=2, bbox_to_anchor=(0.508, 1.05), fontsize=18, shadow=True)
 
     if title:
         fig.suptitle(title, fontsize=20)
 
     if save is not None:
-        fig.savefig(f"figures/{save}.pdf", dpi=300)
+        fig.savefig(save, dpi=300, bbox_inches="tight")
     plt.show()
 
 

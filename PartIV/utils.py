@@ -15,7 +15,9 @@ def show_trajectories(data_dict, title=None, use_labels=True, save=None):
     :param use_labels: Boolean to toggle using dictionary keys as labels.
     :param save: Filename to save the plot (optional, without extension).
     """
-    colors = ["b", "g", "r", "c", "m", "y", "k", "w"]
+    # colors = ["b", "g", "r", "c", "m", "y", "k", "w"]
+    colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown']
+
     linestyles = ["-", "--", "-.", ":", "-.", "--", "-"]
 
     fig, axs = plt.subplots(2, 3, dpi=150, sharex=True, figsize=(20, 10))

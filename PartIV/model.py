@@ -80,7 +80,7 @@ def simulate_linear_model(x0: np.ndarray, policy : callable, n_step : int, with_
         u[:, i] = policy(x[:,i])
         
         if with_noise:
-            x[:,i+1] = A @ x[:,i] + B * u[:, i] + std_const * np.random.multivariate_normal(np.zeros(5), Sigma_x * std_const**2)
+            x[:,i+1] = A @ x[:,i] + B * u[:, i] + np.random.multivariate_normal(np.zeros(5), Sigma_x * std_const**2)
         else:
             x[:,i+1] = A @ x[:,i] + B * u[:, i]
 

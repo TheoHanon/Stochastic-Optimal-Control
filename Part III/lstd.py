@@ -67,16 +67,18 @@ def perform_lstd_PI(initial_policy : callable, cost : callable, psi : callable, 
     
     """
     
-    theta_LSTD_N = None
+    theta = None
     policy = initial_policy
 
+   
+
     for iter in range(n_iter):
-        theta_LSTD_N = perform_lstd(policy, cost, psi, W, data, d)
+        theta = perform_lstd(policy, cost, psi, W, data, d)
 
         def improved_policy(x):
-            res = minimize(lambda u : psi(x, u) @ theta_LSTD_N, 1, bounds=[action_space])
-            return res.x
-
+            sum = theta[4]*x[0] + theta[5]*x[3] + theta[6]*x[4]
+            return - sum / (2*theta[3])
+        
         policy = improved_policy
 
-    return theta_LSTD_N
+    return theta

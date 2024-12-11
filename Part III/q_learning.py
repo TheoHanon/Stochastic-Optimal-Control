@@ -42,6 +42,10 @@ def q_learning(lam : float,
 
     zeta_vector = zeta0_vector
 
+    def policy(x, theta):
+        sum = theta[4]*x[0] + theta[5]*x[3] + theta[6]*x[4]
+        return - sum / (2*theta[3])
+
     for k in range(1, x_data.shape[1]-1):
 
         x_k = x_data[:, k]          # State at time k
@@ -49,7 +53,7 @@ def q_learning(lam : float,
         x_k_plus = x_data[:, k + 1]  # State at time k+1
 
         Q_theta = lambda x, u : np.dot(theta, zeta_vector(x, u))
-        phi_theta = minimize(lambda u : Q_theta(x_k_plus, u), 1, bounds = [action_space_bounds]).x
+        phi_theta = policy(x_k_plus, theta)
     
         D_k_plus = - Q_theta(x_k, u_k) + cost(x_k, u_k) + Q_theta(x_k_plus, phi_theta)
         theta += step_size(k) * D_k_plus * zeta_vector(x_k, u_k)
